@@ -6,7 +6,7 @@ It sits near the shore-power inlet, holds a BLE connection to the **Hughes Power
 Watchdog** (Gen 1, Bluetooth-only, 50A), decodes **both legs** of the feed, and both
 (a) drives a live on-screen **reactor UI** at the bay and (b) re-serves the data as
 JSON at `http://<esp-ip>/status` for raspbpi's `hughes-collect` (separate service,
-not built yet) to sample into the **powerplant dashboard** (`a local dashboard`, on the local network).
+not built yet) to sample into a **powerplant dashboard** on the local network.
 
 **Board:** ESP32-S3 **N16R8** (16MB flash, 8MB OPI PSRAM — PSRAM stays OFF), **native
 USB** (Type-C, no UART chip — hence the CDC flag). Display **ILI9341V** 240×320 SPI +
@@ -18,8 +18,27 @@ with load, live amps/kW/V, a stay-kWh + $cost readout, a persistent power-histor
 terminal-style **boot screen**, **idle sleep**, and — the one write path — a standalone
 **odometer reset** over BLE (the `RESEt` command, reverse-engineered from the phone app;
 Gen 1 was long thought command-less). See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-for the why of everything (protocol, decode, command channel); the running state + full
-session history live in [`LEDGER.md`](LEDGER.md).
+for the why of everything (protocol, decode, command channel).
+
+## ⚠️ "Send diagnostics" only reaches a backend YOU run
+
+The firmware has an optional, owner-initiated **Send diagnostics** button — a
+"support bundle" of device status + recent logs, sent **only when you tap it**,
+never automatically and never in the background.
+
+**This public build sends that to nobody.** The support host and token are
+placeholders (`support.example.com` / unset), so a device flashed from this
+repo — or from the prebuilt image in [`bin/`](bin/) — **will not send anything to
+the original author, to me, or to any server. Nothing phones home.**
+
+To use the feature you must **stand up your own receiver** and point the firmware
+at it:
+
+- set your own host in `src/main.cpp` (`SUPPORT_HOST`), and
+- copy `src/support_token.example.h` → `src/support_token.h` with a token your
+  receiver accepts.
+
+Until you do that the button is inert — which is the intended default.
 
 ## Why it exists
 
@@ -73,6 +92,21 @@ drops back to the portal on its own.
 pio run -e scan -t upload -t monitor
 ```
 
+## Download a prebuilt image (no toolchain needed)
+
+Flash-ready v2.1.0 images live in [`bin/`](bin/):
+
+- **`bin/hughes_bridge-2.1.0.factory.bin`** — full image for a **blank board**, flashed at `0x0`:
+  ```bash
+  esptool.py --chip esp32s3 --port <YOUR_PORT> write_flash 0x0 bin/hughes_bridge-2.1.0.factory.bin
+  ```
+  (or use the browser flasher https://espressif.github.io/esptool-js/ — add the file at offset `0x0`).
+- **`bin/hughes_bridge-2.1.0.bin`** — app-only image (`0x10000`), for OTA if you host your own manifest.
+
+Checksums: [`bin/SHA256SUMS`](bin/SHA256SUMS). Built from the sanitized public source
+(no credentials, no backend host — see the "Send diagnostics" note above). After
+flashing a blank board, follow **Quickstart** to provision it.
+
 ## Flashing note — native USB, no UART chip
 
 The Type-C port is **USB-CDC only** (there's no CP2102/CH340). So:
@@ -121,7 +155,7 @@ platformio.ini          board + platform + the two build envs
 src/main.cpp            scan mode (#ifdef SCAN_ONLY) and bridge mode in one file
 include/config.example.h    copy to config.h (gitignored)
 docs/ARCHITECTURE.md    design, protocol tables, roadmap — read this
-LEDGER.md               live state: confirmed MAC/IP, open items — read on session start
+bin/                    prebuilt v2.1.0 firmware images + checksums
 ```
 
 ## Status
@@ -132,7 +166,7 @@ work items, not yet built.
 
 **Phase 2 (in progress):** turning this into a smart standalone unit — captive-portal
 setup (done), then the 2.8" touchscreen as the primary UI (reactor page + 5/10/30-min
-graphs) with optional on-SD history. Direction + status live in `LEDGER.md`.
+graphs) with optional on-SD history. See `docs/ARCHITECTURE.md` for the design.
 
 
 
