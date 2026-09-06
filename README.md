@@ -137,18 +137,14 @@ graphs) with optional on-SD history. Direction + status live in `LEDGER.md`.
 
 
 ## Parts to order: ~ $50
-** You need one of the following ESP32-S3 boards. Both companies ship the same exact backend board.
-** Board Details: https://www.lcdwiki.com/2.8inch_ESP32-S3_Display
-https://www.amazon.com/dp/B0FH9XHXRT
-https://www.amazon.com/dp/B0FKG7WRWV
+**You need one of the following ESP32-S3 boards. Both companies ship the same exact backend board.**
+- Board Details: https://www.lcdwiki.com/2.8inch_ESP32-S3_Display
+- https://www.amazon.com/dp/B0FH9XHXRT
+- https://www.amazon.com/dp/B0FKG7WRWV
 
-** You can install a battery if you want, that way you can unplug and move it.
-** Any 3.7v battery with a JST 1.25mm connector will work. Ive been using these:
-https://www.amazon.com/dp/B0FH9XHXRT
+**You can install a battery if you want, that way you can unplug and move it.**
+**Any 3.7v battery with a JST 1.25mm connector will work. Ive been using these:**
+- https://www.amazon.com/dp/B0FH9XHXRT
 
-** You need a 32GB or smaller Micro SD Card, larger cards are not readable by the board.
-https://www.amazon.com/dp/B0C1Y87VT3
-
-
-
-https://www.amazon.com/dp/B0FH9XHXRT
+**You need a 32GB or smaller Micro SD Card, larger cards are not readable by the board.**
+- https://www.amazon.com/dp/B0C1Y87VT3
