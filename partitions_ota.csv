@@ -1,0 +1,22 @@
+# hughes_bridge OTA partition table -- 16 MB flash, two 4 MB app slots for A/B OTA + rollback.
+#
+# Switched from the built-in huge_app.csv (single 3 MB app, no OTA). CRITICAL: nvs + otadata are kept at
+# the SAME offsets/sizes as huge_app.csv (nvs 0x9000/0x5000, otadata 0xe000/0x2000), so the existing stored
+# settings survive the re-partition -- Wi-Fi creds, the API key, per-MAC baselines, ntfy config, etc. A
+# normal `pio run -t upload` writes the table + app0 but does NOT erase nvs (0x9000), so config persists.
+# (A full `esptool erase_flash` WOULD wipe it -- don't, unless reprovisioning.)
+#
+# app0/app1 = the two OTA slots (ota_0/ota_1); the firmware is ~1.6 MB, so 4 MB each is ~2.5x headroom.
+# NO spiffs -- graph history lives on the removable SD card (SD_MMC), not internal flash. coredump holds a
+# panic core dump for post-mortem (complements the dmesg RTC ring). ~7.9 MB past coredump is deliberately
+# unallocated -- free for a future data partition without another cable repartition.
+#
+# NOTE: `nvs`/`otadata`/`app0`/`app1` offsets are fixed; flashing this table over a cable preserves NVS.
+# Never `erase_flash`. OTA cannot repartition -- switching to this table is a one-time cable flash per unit.
+#
+# Name,     Type, SubType,  Offset,   Size,     Flags
+nvs,        data, nvs,      0x9000,   0x5000,
+otadata,    data, ota,      0xe000,   0x2000,
+app0,       app,  ota_0,    0x10000,  0x400000,
+app1,       app,  ota_1,    0x410000, 0x400000,
+coredump,   data, coredump, 0x810000, 0x10000,

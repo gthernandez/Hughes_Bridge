@@ -1,0 +1,27 @@
+# PlatformIO build output -- generated, large, never commit.
+.pio/
+
+# Secrets. Copy config.example.h to config.h and fill in (same rule as the rest
+# of the fleet: credentials live on the device, never in git).
+include/config.h
+
+# Support-bundle auth token (R9). Copy support_token.example.h to support_token.h.
+# Ships in the .bin but must never be in tracked source (this repo is GitHub-bound).
+src/support_token.h
+
+# Vendor doc/demo bundle + local reference notes: ~800MB of datasheets, LVGL
+# build artifacts, tool zips and firmware .bin files. The ENTIRE folder is
+# local-only and NEVER pushed (the fleet uplink is metered, and git would carry
+# the blobs forever). Re-download from lcdwiki if a fresh checkout needs it; the
+# facts worth keeping already live in README.md and docs/ARCHITECTURE.md.
+reference/
+
+# PlatformIO / editor IDE state -- settings travel in platformio.ini, not here
+.vscode/
+
+# ESP-IDF Component Manager manifest -- auto-generated next to main.cpp by the
+# build; IDF version pinning lives in platformio.ini, so this is redundant.
+src/idf_component.yml
+
+# Stray Chromium/Electron Crashpad log -- dropped in when this was the CWD; not ours.
+debug.log
