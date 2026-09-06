@@ -20,6 +20,22 @@ terminal-style **boot screen**, **idle sleep**, and — the one write path — a
 Gen 1 was long thought command-less). See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 for the why of everything (protocol, decode, command channel).
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/img/reactor.png" width="185" alt="Main reactor screen: live per-leg amps/kW/volts, combined power, and stay kWh + cost">
+  <img src="docs/img/menu.png" width="185" alt="Settings menu">
+  <img src="docs/img/usage.png" width="185" alt="Daily usage and billing (30-day ledger)">
+  <img src="docs/img/alerts.png" width="185" alt="Phone-alerts setup">
+</p>
+<p align="center"><em>On the box — reactor &middot; menu &middot; daily usage &middot; alerts</em></p>
+
+<p align="center">
+  <img src="docs/img/portal_status.png" width="230" alt="Phone web portal: the same live power numbers">
+  <img src="docs/img/receipt.png" width="230" alt="Printable per-guest electricity receipt (example data)">
+</p>
+<p align="center"><em>On your phone — the live web portal &middot; a printable guest receipt</em></p>
+
 ## ⚠️ "Send diagnostics" only reaches a backend YOU run
 
 The firmware has an optional, owner-initiated **Send diagnostics** button — a
